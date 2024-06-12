@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>Michael Boulos</title>
+    <link rel="stylesheet" href="../css/navPageSheet.css">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script>
+        let menuShown = false;
+
+        window.onload = () => {
+            let navCards = document.querySelectorAll('div[class^="navCard"]');
+
+            function rotateNavCards(open) {
+                for (let i = 0; i < navCards.length; i++ ) {
+                    navCards[i].style.visibility = (open)?("hidden"):("visible");
+                    navCards[i].style.transform = `rotate(${(open)?(0):(30*(i+1))}deg)`;
+                }
+            }
+
+
+            const navButton = document.getElementById("navButton");
+            const navIcon = document.getElementById("hamburgerMenu_SVG");
+                navButton.onclick = () => {
+                    if (menuShown) {
+                        navIcon.childNodes[1].style.transform = "none";
+                        navIcon.childNodes[3].style.opacity = "100%";
+                        navIcon.childNodes[5].style.transform = "none";
+                        rotateNavCards(true);
+                        menuShown = false;
+                    } else {
+                        navIcon.childNodes[1].style.transform = "translate(5px,-22px) rotate(45deg)";
+                        navIcon.childNodes[3].style.opacity = "0%";
+                        navIcon.childNodes[5].style.transform = "translate(5px,25px) rotate(-45deg)";
+                        rotateNavCards(false);
+                        menuShown = true;
+                    }
+                };
+        };
+    </script>
+
+</head>
+<body>
+    <div id="dashBoard_Region">
+        <div class="navCard1">HOME</div>
+        <div class="navCard2" onclick="location.href = './projectPage.html';">PROJECTS</div>
+        <div class="navCard3" onclick="location.href = './aboutMePage.html';">ABOUT ME</div>
+        <div id="navButton">
+            <svg id="hamburgerMenu_SVG" width="135px" height="135px" xmlns="http://www.w3.org/2000/svg">
+                <rect id="rectangle_2" x="17" y="96" width="100" height="10" rx="5" fill="white"/>
+                <rect id="rectangle_3" x="17" y="62" width="100" height="10" rx="5" fill="#464646"/>
+                <rect id="rectangle_4" x="17" y="28" width="100" height="10" rx="5" fill="#CDCDCD"/>
+            </svg>
+        </div>
+    </div>
+    <div id="statusBoard_Region">
+        <div id="statusIndicator">
+            <div>Job Status:</div>
+            <div id="statusText">Open</div>
+        </div>
+        <img id="Logo" src="../public/assets/Logo.webp"/>
+    </div>
+    
+</body>
+</html>

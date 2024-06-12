@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Michael's Projects</title>
+    <link rel="stylesheet" href="../css/projPageSheet.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script defer>
+        // vv hardcoded currently, change these vv
+        let lorem_ipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Semper quis lectus nulla at volutpat diam ut. In hac habitasse platea dictumst quisque. Arcu dictum varius duis at consectetur lorem donec massa. Non arcu risus quis varius quam quisque id diam. Massa enim nec dui nunc mattis. Et egestas quis ipsum suspendisse ultrices. Rhoncus mattis rhoncus urna neque viverra justo nec ultrices dui. Massa tincidunt dui ut ornare lectus sit amet. Sit amet venenatis urna cursus eget. Quam pellentesque nec nam aliquam. Ipsum faucibus vitae aliquet nec ullamcorper. Amet est placerat in egestas erat. Facilisi nullam vehicula ipsum a arcu cursus vitae congue. Parturient montes nascetur ridiculus mus mauris vitae ultricies. Eget mi proin sed libero. At erat pellentesque adipiscing commodo elit at imperdiet dui accumsan. Quisque non tellus orci ac auctor augue mauris. Commodo ullamcorper a lacus vestibulum sed arcu non odio euismod. Nec ultrices dui sapien eget mi proin. In nulla posuere sollicitudin aliquam ultrices sagittis orci a scelerisque."
+        const projects = [
+            {"image_url": "Placeholder buddy", description: lorem_ipsum},
+            {"image_url": "../public/assets/these_parts.jpg", description: lorem_ipsum},
+            {"image_url": "../public/assets/sdoow.jpg", description: lorem_ipsum},
+            {"image_url": "../public/assets/Robson's final final form.png", description: lorem_ipsum}
+        ]; // group of tuples (url,description)
+        const projectShowcases = [];
+        window.onload = () => {
+            for (let i = 0; i < projects.length; i++) {
+                const projectShowcase = document.createElement("div");
+                projectShowcase.className = "project_showcase";
+
+                projectShowcases[i] = projectShowcase;
+
+                const projectImage = document.createElement("img");
+                projectImage.className = "project_image";
+                projectImage.src = projects[i]["image_url"];
+                projectImage.alt = "This image cannot be found";
+                projectImage.onerror = () => {
+                    projectImage.onerror=null;
+                    projectImage.src = '../public/assets/Image_missing.png'
+                }
+                
+                const projectDescription = document.createElement("div");
+                projectDescription.className = "project_description";
+                projectDescription.innerHTML = projects[i]["description"];
+
+                let prInfo = (i % 2 == 0)?([projectImage,projectDescription]):([projectDescription,projectImage]);
+                for (let infoNode of prInfo) projectShowcase.appendChild(infoNode);
+                
+                document.body.appendChild(projectShowcase);
+            }
+            /* meant to represent:
+            *   <div class="project_showcase">
+            *       <img class="project_image"/>
+            *       <div class="project_description">
+            *           [description]
+            *       </div>
+            *   </div>
+            */
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: .7
+            };
+            
+            const shiftCallback = (showcases) => {
+                showcases.forEach(showcase => {
+                    if (showcase.isIntersecting) showcase.target.style.opacity = "100%";
+                })
+            };
+
+            let intersectionObserver = new IntersectionObserver(shiftCallback,observerOptions);
+            projectShowcases.forEach(showcase => intersectionObserver.observe(showcase));
+        };
+    </script>
+</head>
+<body></body>
+</html>

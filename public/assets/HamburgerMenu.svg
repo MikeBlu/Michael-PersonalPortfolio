@@ -1,0 +1,7 @@
+<svg viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:anim="http://www.w3.org/2000/anim" anim="" anim:transform-origin="50% 50%" anim:duration="1" anim:ease="ease-in-out">
+  <g id="HamburgerMenu_SVG">
+    <rect id="Rectangle 2" x="17" y="96" width="100" height="10" rx="5" fill="white" anim:y="0[0:1:-34:ease-in-out]" anim:rotation="0[0:1:-45:ease-in-out]"></rect>
+    <rect id="Rectangle 3" x="17" y="62" width="100" height="10" rx="5" fill="#464646" anim:opacity="1[0:0.2:0:ease-in-out]"></rect>
+    <rect id="Rectangle 4" x="17" y="28" width="100" height="10" rx="5" fill="#CDCDCD" anim:y="0[0:1:34:ease-in-out]" anim:rotation="0[0:1:45:ease-in-out]"></rect>
+  </g>
+</svg>

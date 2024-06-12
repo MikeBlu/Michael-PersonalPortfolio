@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&display=swap');
+html, body {
+    height: 100%;
+    width: 100%;
+    margin:0;
+    padding:0;
+    font-family: "Kode Mono", monospace;
+    background-color: #191E28;
+}
+.project_showcase { 
+    display: flex;
+    color: whitesmoke;
+    opacity: 0%;
+    border-bottom: 0.05rem solid whitesmoke;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    transition: all 1s ease-in;
+}
+.project_image {
+    object-fit: cover;
+    width: 720px;
+    height: 405px;
+}

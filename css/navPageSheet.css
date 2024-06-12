@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&display=swap');
+body {
+    background-image: linear-gradient(#1d1d1d, min(80vh,80vw),crimson,min(90vh,90vw),#444444);
+    min-height: 100vh;
+    margin: 0;
+}
+#dashBoard_Region {
+    width: 100%;
+    height: 20%;
+}
+#navButton {
+    width: fit-content;
+    height: fit-content;
+    cursor: pointer;
+}
+#hamburgerMenu_SVG > rect {
+    transform-origin: 50% 50%;
+    transition: all 0.6s ease-in-out;
+}
+[class^=navCard] {
+    visibility: hidden;
+    cursor: pointer;
+    border-radius: 15%; padding: 5px;
+    color: whitesmoke; font-size: 50px; font-family: "Kode Mono", monospace;
+    position: absolute; top: 20px; margin-left: 130px;
+    z-index: 1;
+    transform-origin: -25% 50%;
+    transition: transform 0.3s ease-in-out, visibility 0.28s ease-out;
+}
+.navCard1 {background-color: black;} .navCard2 {background-color: #0f0f0f;} .navCard3 {background-color: #202020;}
+#statusIndicator {
+    position: absolute;
+    left: 30vh;
+    top: min(30%,15vw);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+    border: 0.05rem solid red;
+    color: white; font-size: 20px; font-family: "Kode Mono", monospace; 
+    padding: 5vw;
+    border-radius: 100%;
+}
+#statusText {
+    color: aqua
+}
+#Logo {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    max-width: 100%;
+    height: auto;
+}
