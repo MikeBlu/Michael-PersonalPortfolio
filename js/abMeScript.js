@@ -1,6 +1,6 @@
-import * as THREE from 'threejs/three.module.js';
+import * as THREE from '../threejs/three.module.js';
 import { GLTFLoader } from 'https://cdn.skypack.dev/three@0.133.0/examples/jsm/loaders/GLTFLoader.js';
-import { OrbitControls } from 'threejs/OrbitControls.js';
+import { OrbitControls } from '../threejs/OrbitControls.js';
 
 // init scene, camera, and canvas
 const scene = new THREE.Scene();
