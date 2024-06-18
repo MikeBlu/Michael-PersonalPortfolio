@@ -1,6 +1,6 @@
-import * as THREE from '../threejs/three.module.js';
+import * as THREE from 'threejs/three.module.js';
 import { GLTFLoader } from 'https://cdn.skypack.dev/three@0.133.0/examples/jsm/loaders/GLTFLoader.js';
-import { OrbitControls } from '../threejs/OrbitControls.js';
+import { OrbitControls } from 'threejs/OrbitControls.js';
 
 // init scene, camera, and canvas
 const scene = new THREE.Scene();
@@ -11,6 +11,7 @@ const renderCanvas = document.getElementById("myCanvas");
 // set renderspace
 const renderer = new THREE.WebGLRenderer( {canvas: renderCanvas, antialias: true } );
 const clock = new THREE.Clock();
+const clickableObjects = [];
 renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.setAnimationLoop( animate ); // set animation loop
 //
@@ -27,15 +28,15 @@ loadManager.onStart = function ( url, itemsLoaded, itemsTotal ) {
 loadManager.onProgress = function ( item, loaded, total ) {
     barIndicator.style.width = (loaded / total * 100) + '%';
 };
-loadManager.onLoad = function ( ) {
+loadManager.onLoad = function () {
     renderCanvas.style.filter = 'none';
     barContainer.style.visibility = 'hidden';
     barIndicator.style.visibility = 'hidden';
 };
 //
 
-// initialize TextureLoader
-const textureLoader = new THREE.TextureLoader(loadManager);
+// initialize Overlay Elements
+const infoSelected = document.getElementById("elementSelected");
 //
 
 // initialize OrbitControls
@@ -46,10 +47,7 @@ controls.maxDistance = 400;
 // create & add environment sphere
 let envGeometry = new THREE.SphereGeometry( 500, 32, 32 );
 envGeometry.scale( -1, 1, 1 );
-/*
-let material = new THREE.MeshBasicMaterial({
-	map: textureLoader.load( '../public/assets/Space_Envo.png' )
-}); */
+
 var material = new THREE.ShaderMaterial({
     uniforms: {
       color1: {
@@ -80,6 +78,7 @@ var material = new THREE.ShaderMaterial({
     `
 });
 const largeSphere = new THREE.Mesh( envGeometry, material );
+largeSphere.name = "envSphere";
 scene.add( largeSphere );
 
 // create & add sun
@@ -89,6 +88,7 @@ const sun = new THREE.Mesh(
 );
 sun.name = "Sun";
 scene.add(sun);
+clickableObjects.push(sun);
 //
 
 // create & add (white->blue) hemisphere light
@@ -105,9 +105,9 @@ let satelliteResume = new THREE.Group();
 meshLoader.load("../public/assets/CV.gltf",
 	function ( gltf ) {
         satelliteResume = gltf.scene;
-        satelliteResume.scale.set(0.2, 0.2, 0.2); 
-        satelliteResume.name = "Resume";
+        satelliteRole.name = "Resume";
 		scene.add(satelliteResume);
+        clickableObjects.push(satelliteResume);
 	},
 	function ( xhr ) {loadManager.onProgress(xhr,xhr.loaded,xhr.total);},
 	function ( error ) {console.error(error);}
@@ -120,9 +120,9 @@ let satelliteContact = new THREE.Group();
 meshLoader.load("../public/assets/Telephone.gltf",
 	function ( gltf ) {
         satelliteContact = gltf.scene;
-        satelliteContact.scale.set(0.07, 0.07, 0.07); 
-        satelliteContact.name = "Contacts";
+        satelliteRole.name = "Contacts";
 		scene.add(satelliteContact);
+        clickableObjects.push(satelliteContact);
 	},
 	function ( xhr ) {loadManager.onProgress(xhr,xhr.loaded,xhr.total);},
 	function ( error ) {console.error(error);}
@@ -130,14 +130,22 @@ meshLoader.load("../public/assets/Telephone.gltf",
 //
 
 // create & add role-satellite
-const roleOrbitSpeed = 0.7;
+const roleOrbitSpeed = 0.6;
 let satelliteRole = new THREE.Group();
 meshLoader.load("../public/assets/Personnel.gltf",
 	function ( gltf ) {
         satelliteRole = gltf.scene;
-        satelliteRole.scale.set(0.13, 0.13, 0.13); 
-        satelliteRole.name = "role";
+        /*
+        let boundingBox = new THREE.Mesh(
+            new THREE.BoxGeometry(3,7,3),
+            new THREE.MeshBasicMaterial({color: 0xffffff, wireframe: true})
+        );
+        boundingBox.position.y = 3;
+        satelliteRole.add(boundingBox);
+        */
+        satelliteRole.name = "My Role";
 		scene.add(satelliteRole);
+        clickableObjects.push(satelliteRole);
 	},
 	function ( xhr ) {loadManager.onProgress(xhr,xhr.loaded,xhr.total);},
 	function ( error ) {console.error(error);}
@@ -164,22 +172,56 @@ camera.lookAt(0,0,0);
 controls.update();
 //
 
+
+// create 'click' event listener
+const clickClock = new THREE.Clock();
+["mousedown","mouseup"].forEach((e) => {
+    document.addEventListener(e,  onClickAndRelease, false);
+});
+
+function onClickAndRelease(e) {
+    if (e.type === "mousedown") {
+        clickClock.getDelta();
+    } else if (e.type === "mouseup") {
+        if (clickClock.getDelta() <= 0.5) rayOnMouseEvent(e);
+    }
+}
+//
+
+// raycast to determine object under mouse when event fires
+function rayOnMouseEvent(event) {
+    const raycaster =  new THREE.Raycaster();
+    const clickLoc = new THREE.Vector2(
+        ( event.clientX / window.innerWidth ) * 2 - 1,
+        -( event.clientY / window.innerHeight ) * 2 + 1
+    );
+    raycaster.setFromCamera( clickLoc, camera );
+
+    const intersectionAr = raycaster.intersectObjects(clickableObjects,true);
+
+    // vv visualizes fired ray vv
+    scene.add(new THREE.ArrowHelper(raycaster.ray.direction, raycaster.ray.origin, 300, 0xff0000) );
+
+    if(intersectionAr.length > 0) {
+        infoSelected.innerHTML = intersectionAr[0].object.name;
+    }
+}
+//
+
+
+// get current coords for orbit around (0,0,0) based on time constant
 function getOrbitPathCoords(axis, radius, time, speed) {
     if (axis.toLowerCase() !== "x" && axis.toLowerCase() !== "z") {
         throw new Error("Invalid axis provided (valid: 'x' or 'z')");
     }
     return ( radius * ((axis === "x" )?(Math.cos(time*speed)):(Math.sin(time*speed))) );
 }
+//
 
 function animate() {
 
 	sun.rotation.x += 0.01;
 	sun.rotation.y += 0.01;
-
-    if (typeof variable !== 'undefined') {
-        buggy.rotation.x += 0.01;
-        buggy.rotation.y += 0.01;
-    }
 
     let elevation = (Math.sin(clock.getElapsedTime())/10)+0.1;
 
