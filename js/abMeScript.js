@@ -1,6 +1,7 @@
 import * as THREE from '../threejs/three.module.js';
 import { GLTFLoader } from 'https://cdn.skypack.dev/three@0.133.0/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from '../threejs/OrbitControls.js';
+import * as TWEEN from '../threejs/tween.module.js';
 
 // init scene, camera, and canvas
 const scene = new THREE.Scene();
@@ -12,6 +13,7 @@ const renderCanvas = document.getElementById("myCanvas");
 const renderer = new THREE.WebGLRenderer( {canvas: renderCanvas, antialias: true } );
 const clock = new THREE.Clock();
 const clickableObjects = [];
+let selectedObject;
 renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.setAnimationLoop( animate ); // set animation loop
 //
@@ -37,11 +39,17 @@ loadManager.onLoad = function () {
 
 // initialize Overlay Elements
 const infoSelected = document.getElementById("elementSelected");
+const resumeViewer = document.getElementById("pdfContainer");
 //
 
 // initialize OrbitControls
 const controls = new OrbitControls(camera,renderer.domElement);
 controls.maxDistance = 400;
+controls.mouseButtons = {
+    LEFT: THREE.MOUSE.ROTATE,
+    MIDDLE: THREE.MOUSE.DOLLY,
+    RIGHT: THREE.MOUSE.ROTATE
+};
 //
 
 // create & add environment sphere
@@ -80,6 +88,7 @@ var material = new THREE.ShaderMaterial({
 const largeSphere = new THREE.Mesh( envGeometry, material );
 largeSphere.name = "envSphere";
 scene.add( largeSphere );
+//
 
 // create & add sun
 const sun = new THREE.Mesh( 
@@ -105,7 +114,7 @@ let satelliteResume = new THREE.Group();
 meshLoader.load("../public/assets/CV.gltf",
 	function ( gltf ) {
         satelliteResume = gltf.scene;
-        satelliteRole.name = "Resume";
+        satelliteResume.children[0].name = "Resume";
 		scene.add(satelliteResume);
         clickableObjects.push(satelliteResume);
 	},
@@ -120,7 +129,7 @@ let satelliteContact = new THREE.Group();
 meshLoader.load("../public/assets/Telephone.gltf",
 	function ( gltf ) {
         satelliteContact = gltf.scene;
-        satelliteRole.name = "Contacts";
+        satelliteContact.name = "Contacts";
 		scene.add(satelliteContact);
         clickableObjects.push(satelliteContact);
 	},
@@ -135,14 +144,6 @@ let satelliteRole = new THREE.Group();
 meshLoader.load("../public/assets/Personnel.gltf",
 	function ( gltf ) {
         satelliteRole = gltf.scene;
-        /*
-        let boundingBox = new THREE.Mesh(
-            new THREE.BoxGeometry(3,7,3),
-            new THREE.MeshBasicMaterial({color: 0xffffff, wireframe: true})
-        );
-        boundingBox.position.y = 3;
-        satelliteRole.add(boundingBox);
-        */
         satelliteRole.name = "My Role";
 		scene.add(satelliteRole);
         clickableObjects.push(satelliteRole);
@@ -199,11 +200,17 @@ function rayOnMouseEvent(event) {
 
     const intersectionAr = raycaster.intersectObjects(clickableObjects,true);
 
-    // vv visualizes fired ray vv
-    scene.add(new THREE.ArrowHelper(raycaster.ray.direction, raycaster.ray.origin, 300, 0xff0000) );
+    // vv visualizes fired ray (disabled) vv
+    // scene.add(new THREE.ArrowHelper(raycaster.ray.direction, raycaster.ray.origin, 300, 0xff0000) );
 
     if(intersectionAr.length > 0) {
-        infoSelected.innerHTML = intersectionAr[0].object.name;
+        selectedObject = intersectionAr[0].object.parent;
+        infoSelected.innerHTML = selectedObject.name;
+        if (selectedObject == satelliteResume.children[0]) resumeViewer.style.visibility = 'visible';
+    } else {
+        selectedObject = null;
+        infoSelected.innerHTML = "Nothing";
+        resumeViewer.style.visibility = 'hidden';
     }
 }
 //
@@ -225,24 +232,25 @@ function animate() {
 
     let elevation = (Math.sin(clock.getElapsedTime())/10)+0.1;
 
-    satelliteResume.position.set(
-        getOrbitPathCoords("x",1,clock.getElapsedTime(),resumeOrbitSpeed),
-        elevation,
-        getOrbitPathCoords("z",1,clock.getElapsedTime(),resumeOrbitSpeed)
-    );
-    satelliteContact.position.set(
-        getOrbitPathCoords("x",2,clock.getElapsedTime(),contactOrbitSpeed),
-        elevation,
-        getOrbitPathCoords("z",2,clock.getElapsedTime(),contactOrbitSpeed)
-    );
-    satelliteRole.position.set(
+    if (!(selectedObject == satelliteResume.children[0])) { satelliteResume.position.set(
+            getOrbitPathCoords("x",1,clock.getElapsedTime(),resumeOrbitSpeed),
+            elevation,
+            getOrbitPathCoords("z",1,clock.getElapsedTime(),resumeOrbitSpeed)
+        );
+        satelliteResume.lookAt(0,0,0);
+    }
+    if (!(selectedObject == satelliteContact)) { satelliteContact.position.set(
+            getOrbitPathCoords("x",2,clock.getElapsedTime(),contactOrbitSpeed),
+            elevation,
+            getOrbitPathCoords("z",2,clock.getElapsedTime(),contactOrbitSpeed)
+        );
+        satelliteContact.rotation.y += 0.005;
+    }
+    if (!(selectedObject == satelliteRole)) satelliteRole.position.set(
         getOrbitPathCoords("x",3,clock.getElapsedTime(),roleOrbitSpeed),
         elevation,
         getOrbitPathCoords("z",3,clock.getElapsedTime(),roleOrbitSpeed)
     );
-
-    satelliteResume.lookAt(0,0,0);
-    satelliteContact.rotation.y += 0.005;
 
 	renderer.render( scene, camera );
 }
