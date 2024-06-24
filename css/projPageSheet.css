@@ -21,3 +21,17 @@ html, body {
     width: 720px;
     height: 405px;
 }
+#goBackButton {
+    z-index: 2;
+    position: fixed;
+    top: 2%; left: 2%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: white; font-size: 25px; font-family: "Kode Mono", monospace;
+    background-image:  linear-gradient(to right,#1d1d1d, crimson);
+    border: solid white 2px;
+    border-radius: 25px;
+    padding: 5px; padding-right: 10px;
+} #goBackButton:hover {border-color: pink;}
+#backArrow_SVG {margin-right: 15px;}

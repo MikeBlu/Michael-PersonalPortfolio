@@ -15,7 +15,7 @@ const clock = new THREE.Clock();
 const clickableObjects = [];
 let selectedObject;
 renderer.setSize( window.innerWidth, window.innerHeight );
-renderer.setAnimationLoop( animate ); // set animation loop
+renderer.render( scene, camera );
 //
 
 // initialize LoadingManager and loadingIndicator
@@ -97,7 +97,6 @@ const sun = new THREE.Mesh(
 );
 sun.name = "Sun";
 scene.add(sun);
-clickableObjects.push(sun);
 //
 
 // create & add (white->blue) hemisphere light
@@ -254,3 +253,11 @@ function animate() {
 
 	renderer.render( scene, camera );
 }
+
+renderer.setAnimationLoop( animate ); // set animation loop
+
+window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth / window.innerHeight);
+});
