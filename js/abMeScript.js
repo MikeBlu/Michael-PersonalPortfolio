@@ -108,13 +108,15 @@ const meshLoader = new GLTFLoader();
 //
 
 // create & add resume-satellite
-const resumeOrbitSpeed = 0.2;
-let satelliteResume = new THREE.Group();
+const resumeOrbitSpeed = 0.005;
+let satelliteResume, resOrbitLock = new THREE.Group();
 meshLoader.load("../public/assets/CV.gltf",
 	function ( gltf ) {
         satelliteResume = gltf.scene;
         satelliteResume.children[0].name = "Resume";
-		scene.add(satelliteResume);
+        resOrbitLock.add(satelliteResume);
+        satelliteResume.position.x = 1;
+		scene.add(resOrbitLock);
         clickableObjects.push(satelliteResume);
 	},
 	function ( xhr ) {loadManager.onProgress(xhr,xhr.loaded,xhr.total);},
@@ -123,13 +125,15 @@ meshLoader.load("../public/assets/CV.gltf",
 //
 
 // create & add contact-satellite
-const contactOrbitSpeed = 0.5;
-let satelliteContact = new THREE.Group();
+const contactOrbitSpeed = 0.01;
+let satelliteContact, conOrbitLock = new THREE.Group();
 meshLoader.load("../public/assets/Telephone.gltf",
 	function ( gltf ) {
         satelliteContact = gltf.scene;
         satelliteContact.name = "Contacts";
-		scene.add(satelliteContact);
+        conOrbitLock.add(satelliteContact);
+        satelliteContact.position.x = 2;
+		scene.add(conOrbitLock);
         clickableObjects.push(satelliteContact);
 	},
 	function ( xhr ) {loadManager.onProgress(xhr,xhr.loaded,xhr.total);},
@@ -138,13 +142,15 @@ meshLoader.load("../public/assets/Telephone.gltf",
 //
 
 // create & add role-satellite
-const roleOrbitSpeed = 0.6;
-let satelliteRole = new THREE.Group();
+const roleOrbitSpeed = 0.012;
+let satelliteRole, roleOrbitLock = new THREE.Group();
 meshLoader.load("../public/assets/Personnel.gltf",
 	function ( gltf ) {
         satelliteRole = gltf.scene;
         satelliteRole.name = "My Role";
-		scene.add(satelliteRole);
+        roleOrbitLock.add(satelliteRole);
+        satelliteRole.position.x = 3;
+		scene.add(roleOrbitLock);
         clickableObjects.push(satelliteRole);
 	},
 	function ( xhr ) {loadManager.onProgress(xhr,xhr.loaded,xhr.total);},
@@ -215,14 +221,14 @@ function rayOnMouseEvent(event) {
 //
 
 
-// get current coords for orbit around (0,0,0) based on time constant
+/* get current coords for orbit around (0,0,0) based on time constant
 function getOrbitPathCoords(axis, radius, time, speed) {
     if (axis.toLowerCase() !== "x" && axis.toLowerCase() !== "z") {
         throw new Error("Invalid axis provided (valid: 'x' or 'z')");
     }
     return ( radius * ((axis === "x" )?(Math.cos(time*speed)):(Math.sin(time*speed))) );
 }
-//
+*/
 
 function animate() {
 
@@ -231,25 +237,20 @@ function animate() {
 
     let elevation = (Math.sin(clock.getElapsedTime())/10)+0.1;
 
-    if (!(selectedObject == satelliteResume.children[0])) { satelliteResume.position.set(
-            getOrbitPathCoords("x",1,clock.getElapsedTime(),resumeOrbitSpeed),
-            elevation,
-            getOrbitPathCoords("z",1,clock.getElapsedTime(),resumeOrbitSpeed)
-        );
+    if (!(selectedObject == satelliteResume?.children[0])) {
+        resOrbitLock.rotation.y += resumeOrbitSpeed;
+        satelliteResume.position.y = elevation;
         satelliteResume.lookAt(0,0,0);
     }
-    if (!(selectedObject == satelliteContact)) { satelliteContact.position.set(
-            getOrbitPathCoords("x",2,clock.getElapsedTime(),contactOrbitSpeed),
-            elevation,
-            getOrbitPathCoords("z",2,clock.getElapsedTime(),contactOrbitSpeed)
-        );
+    if (!(selectedObject == satelliteContact)) {
+        conOrbitLock.rotation.y += contactOrbitSpeed;
+        satelliteContact.position.y = elevation;
         satelliteContact.rotation.y += 0.005;
     }
-    if (!(selectedObject == satelliteRole)) satelliteRole.position.set(
-        getOrbitPathCoords("x",3,clock.getElapsedTime(),roleOrbitSpeed),
-        elevation,
-        getOrbitPathCoords("z",3,clock.getElapsedTime(),roleOrbitSpeed)
-    );
+    if (!(selectedObject == satelliteRole)) {
+        roleOrbitLock.rotation.y += roleOrbitSpeed;
+        satelliteRole.position.y = elevation;
+    }
 
 	renderer.render( scene, camera );
 }
