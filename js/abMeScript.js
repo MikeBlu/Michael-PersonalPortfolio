@@ -45,11 +45,7 @@ const resumeViewer = document.getElementById("pdfContainer");
 // initialize OrbitControls
 const controls = new OrbitControls(camera,renderer.domElement);
 controls.maxDistance = 400;
-controls.mouseButtons = {
-    LEFT: THREE.MOUSE.ROTATE,
-    MIDDLE: THREE.MOUSE.DOLLY,
-    RIGHT: THREE.MOUSE.ROTATE
-};
+controls.enablePan = false;
 //
 
 // create & add environment sphere
@@ -220,15 +216,14 @@ function rayOnMouseEvent(event) {
 }
 //
 
-
-/* get current coords for orbit around (0,0,0) based on time constant
+// get current coords for orbit around (0,0,0) based on time constant
 function getOrbitPathCoords(axis, radius, time, speed) {
     if (axis.toLowerCase() !== "x" && axis.toLowerCase() !== "z") {
         throw new Error("Invalid axis provided (valid: 'x' or 'z')");
     }
     return ( radius * ((axis === "x" )?(Math.cos(time*speed)):(Math.sin(time*speed))) );
 }
-*/
+//
 
 function animate() {
 
@@ -257,8 +252,10 @@ function animate() {
 
 renderer.setAnimationLoop( animate ); // set animation loop
 
+
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
+    controls.update();
     renderer.setSize(window.innerWidth / window.innerHeight);
 });

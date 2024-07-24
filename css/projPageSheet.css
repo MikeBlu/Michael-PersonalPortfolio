@@ -8,19 +8,18 @@ html, body {
     background-color: #191E28;
 }
 .project_showcase { 
-    display: flex;
     color: whitesmoke;
+    cursor: pointer;
     opacity: 0%;
-    border-bottom: 0.05rem solid whitesmoke;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    transition: all 1s ease-in;
-}
-.project_image {
-    object-fit: cover;
-    width: 720px;
-    height: 405px;
-}
+    font-size: 2rem;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: 0.05rem solid whitesmoke;
+    border-radius: 25px;
+    margin: 1%;
+    padding: 5%;
+    transition: opacity 1s ease-in, margin 0.5s ease-out;
+} .project_showcase:hover { margin: 0.5%;}
 #goBackButton {
     z-index: 2;
     position: fixed;
