@@ -207,7 +207,18 @@ function rayOnMouseEvent(event) {
     if(intersectionAr.length > 0) {
         selectedObject = intersectionAr[0].object.parent;
         infoSelected.innerHTML = selectedObject.name;
-        if (selectedObject == satelliteResume.children[0]) resumeViewer.style.visibility = 'visible';
+        switch (selectedObject) {
+            case (satelliteResume.children[0]):
+                resumeViewer.style.visibility = 'visible';
+                break;
+            case (satelliteContact):
+                window.location.href = "mailto:michaelboulos47@gmail.com";
+                break;
+            case (satelliteRole):
+                window.open("https://github.com/MikeBlu", '_blank').focus();
+                break;
+        }
+        // if (selectedObject == satelliteResume.children[0]) resumeViewer.style.visibility = 'visible';
     } else {
         selectedObject = null;
         infoSelected.innerHTML = "Nothing";
