@@ -55,10 +55,10 @@ envGeometry.scale( -1, 1, 1 );
 var material = new THREE.ShaderMaterial({
     uniforms: {
       color1: {
-        value: new THREE.Color("rgb(243,188,245)")
+        value: new THREE.Color("rgb(38,93,165)")
       },
       color2: {
-        value: new THREE.Color("rgb(192,223,255)")
+        value: new THREE.Color("rgb(0,0,50)")
       }
     },
     vertexShader: `

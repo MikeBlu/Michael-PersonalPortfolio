@@ -1,14 +1,61 @@
 @import url('https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&display=swap');
-body {
-    background-image: linear-gradient(#1d1d1d, min(80vh,80vw),crimson,min(90vh,90vw),#444444);
-    min-height: 100vh;
+
+html, body {
+    background:
+    radial-gradient(40% 130% at bottom left, #0d2646 10%, transparent 80%),
+    radial-gradient(130% 40% at bottom, #3b0b36 10%, #010817 80%);
+    height: 100%;
     margin: 0;
+    overflow: hidden;
+    font-family: "Kode Mono", monospace;
+}
+body > div {
+    height: 100%;
+    background: none;
+    background-image: radial-gradient(#010817 1px, transparent 0);
+    background-size: 10px 10px;
+    overflow: hidden;
+}
+#cursorIndicator {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 15vh;
+    height: 15vh;
+    background: radial-gradient(#ffffff75 3px, transparent 70%);
+    mask-image: radial-gradient(rgb(0, 0, 0) 1px, rgba(0, 0, 0, 0) 0);
+    -webkit-mask-image: radial-gradient(rgb(0, 0, 0) 1px, rgba(255, 255, 255, 0) 0);
+    mask-size: 10px 10px;
+    pointer-events: none;
+}
+#cornerSymbol {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 20%;
+    opacity: 90%;
 }
 #dashBoard_Region {
-    width: 100%;
-    height: 20%;
+    display: flex;
 }
+#backgroundName {
+    min-width: 40%;
+    display: inline;
+    user-select: none;
+    -webkit-user-select: none;       
+    -moz-user-select: none;
+    -ms-user-select: none;
+    align-content: center;
+    font-style: italic;
+    font-size: 1.5rem;
+    letter-spacing: 6rem;
+    color: rgba(255,255,255,0.2);
+    mask-image: linear-gradient(to right, black,transparent);
+    text-overflow: clip;
+    text-wrap: nowrap;
+}
+
 #navButton {
+    margin-top: 1%; margin-left: 1%;
     width: fit-content;
     height: fit-content;
     cursor: pointer;
@@ -17,38 +64,112 @@ body {
     transform-origin: 50% 50%;
     transition: all 0.6s ease-in-out;
 }
+#content_Region {
+    display: flex;
+    align-items: center;
+    height: 80vh;
+    width: 80vw;
+    margin: auto;
+    gap: 5%;
+}
+
+#timeLine_Region {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    width: 60%;
+    
+}
+#timeLine_Region > h1 {
+    font-size: 1.5rem;
+    color: white;
+    text-decoration: underline;
+    text-decoration-style: double;
+}
+#timeLine_Region > svg {
+    width: auto;
+}
+@keyframes floatFromLeft {
+    0% {transform: translateX(400%); opacity: 0%;}
+    60% {transform: translateX(0); opacity: 100%;}
+    65% {transform: rotate(2deg);}
+    80% {transform: rotate(-2deg);}
+    100% {transform: rotate(0);}
+}
+#picContainer {
+    display: grid;
+    width: 30%;
+    justify-content: center;
+    border: 2px rgb(154, 247, 246) dashed;
+    border-radius: 10px;
+    padding: 0.5em;
+    animation: floatFromLeft 1.5s ease-out;
+}
+#michaelPicture {
+    max-width: 100%;
+    max-height: 100%;
+    padding: 0;
+    border-radius: 2px;
+}
+
+@media only screen and (max-width: 600px) {
+    #content_Region {
+      flex-direction: column;
+      width: 90%;
+    }
+    #hamburgerMenu_SVG {
+        width: 80%;
+    }
+    #timeLine_Region > svg {
+        height: 80%;
+    }
+    #picContainer {
+        max-height: 40%;
+    }
+}
 [class^=navCard] {
     visibility: hidden;
     cursor: pointer;
-    border-radius: 15%; padding: 5px;
+    border-radius: 25px; padding: 5px;
     color: whitesmoke; font-size: 50px; font-family: "Kode Mono", monospace;
-    position: absolute; top: 20px; margin-left: 130px;
-    z-index: 1;
+    position: absolute; top: 15px; margin-left: 110px;
+    z-index: 2;
     transform-origin: -25% 50%;
     transition: transform 0.3s ease-in-out, visibility 0.28s ease-out;
 }
-.navCard1 {background-color: black;} .navCard2 {background-color: #0f0f0f;} .navCard3 {background-color: #202020;}
-#statusIndicator {
-    position: absolute;
-    left: 30vh;
-    top: min(30%,15vw);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    aspect-ratio: 1;
-    border: 0.05rem solid red;
-    color: white; font-size: 20px; font-family: "Kode Mono", monospace; 
-    padding: 5vw;
-    border-radius: 100%;
+.navCard1 {background-color: rgb(8, 3, 36);} .navCard2 {background-color: #080e22;} .navCard3 {background-color: #181d2b;}
+
+/* timeLine SVG style */
+path {
+    fill: none;
 }
-#statusText {
-    color: aqua
+.markerText {
+    fill: rgb(154, 247, 246);
+    font-size: 0.7em;
+    visibility: hidden;
 }
-#Logo {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    max-width: 100%;
-    height: auto;
+[class^="rmap_marker"] {
+    fill: rgba(0,0,0,0.1);
+    stroke: rgb(154, 247, 246);
+    stroke-dasharray: 3;
+}
+.rmap_fill {
+    fill: rgb(154, 247, 246);
+    opacity: 0%;
+    -webkit-transition: opacity .4s ease;
+    -moz-transition: opacity .4s ease;
+    -o-transition: opacity .4s ease;
+    transition: opacity .4s ease;
+} .rmap_fill:hover {
+    opacity: 100%;
+}
+#timelineTrailBright {
+    stroke: url(#transColGradient);
+    opacity: 0%;
+    -webkit-transition: opacity .3s ease;
+    -moz-transition: opacity .3s ease;
+    -o-transition: opacity .3s ease;
+    transition: opacity .3s ease;
+    
 }

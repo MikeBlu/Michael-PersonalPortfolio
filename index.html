@@ -5,61 +5,118 @@
     <title>Michael Boulos</title>
     <link rel="stylesheet" href="css/navPageSheet.css">
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <script>
-        let menuShown = false;
-
-        window.onload = () => {
-            let navCards = document.querySelectorAll('div[class^="navCard"]');
-
-            function rotateNavCards(open) {
-                for (let i = 0; i < navCards.length; i++ ) {
-                    navCards[i].style.visibility = (open)?("hidden"):("visible");
-                    navCards[i].style.transform = `rotate(${(open)?(0):(30*(i+1))}deg)`;
-                }
-            }
-
-
-            const navButton = document.getElementById("navButton");
-            const navIcon = document.getElementById("hamburgerMenu_SVG");
-                navButton.onclick = () => {
-                    if (menuShown) {
-                        navIcon.childNodes[1].style.transform = "none";
-                        navIcon.childNodes[3].style.opacity = "100%";
-                        navIcon.childNodes[5].style.transform = "none";
-                        rotateNavCards(true);
-                        menuShown = false;
-                    } else {
-                        navIcon.childNodes[1].style.transform = "translate(5px,-22px) rotate(45deg)";
-                        navIcon.childNodes[3].style.opacity = "0%";
-                        navIcon.childNodes[5].style.transform = "translate(5px,25px) rotate(-45deg)";
-                        rotateNavCards(false);
-                        menuShown = true;
-                    }
-                };
-        };
-    </script>
-
+    <script type="module" src="js/navPageScript.js"></script>
 </head>
 <body>
-    <div id="dashBoard_Region">
-        <div class="navCard1" onClick="window.location.reload();">HOME</div>
-        <div class="navCard2" onclick="location.href = 'html/projectPage.html';">PROJECTS</div>
-        <div class="navCard3" onclick="location.href = 'html/aboutMePage.html';">ABOUT ME</div>
-        <div id="navButton">
-            <svg id="hamburgerMenu_SVG" width="135px" height="135px" xmlns="http://www.w3.org/2000/svg">
-                <rect id="rectangle_2" x="17" y="96" width="100" height="10" rx="5" fill="white"/>
-                <rect id="rectangle_3" x="17" y="62" width="100" height="10" rx="5" fill="#464646"/>
-                <rect id="rectangle_4" x="17" y="28" width="100" height="10" rx="5" fill="#CDCDCD"/>
-            </svg>
+    <div id="cursorIndicator"></div>
+    <div>
+        <div id="dashBoard_Region">
+            <div class="navCard1" onClick="window.location.reload();">HOME</div>
+            <div class="navCard2" onclick="location.href = 'html/projectPage.html';">PROJECTS</div>
+            <div class="navCard3" onclick="location.href = 'html/aboutMePage.html';">ABOUT ME</div>
+            <div id="navButton">
+                <svg id="hamburgerMenu_SVG" width="20%" viewbox="0 0 135 135" xmlns="http://www.w3.org/2000/svg">
+                    <rect id="rectangle_2" x="17" y="96" width="100" height="10" rx="5" fill="url(#rect2Grad)"/>
+                    <rect id="rectangle_3" x="17" y="62" width="100" height="10" rx="5" fill="url(#rect3Grad)"/>
+                    <rect id="rectangle_4" x="17" y="28" width="100" height="10" rx="5" fill="url(#rect4Grad)"/>
+                    <defs>
+                        <linearGradient id="rect2Grad">
+                            <stop offset="5%" stop-color="white" />
+                            <stop offset="95%" stop-color="lightgray" />
+                        </linearGradient>
+                        <linearGradient id="rect3Grad">
+                            <stop offset="5%" stop-color="white" />
+                            <stop offset="60%" stop-color="lightgray" />
+                        </linearGradient>
+                        <linearGradient id="rect4Grad">
+                            <stop offset="5%" stop-color="white" />
+                            <stop offset="25%" stop-color="lightgray" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <div id="backgroundName">
+                <h1>MICHAEL B</h1>
+            </div>
         </div>
-    </div>
-    <div id="statusBoard_Region">
-        <div id="statusIndicator">
-            <div>Job Status:</div>
-            <div id="statusText">Open</div>
+        <div id="content_Region">
+            <div id="timeLine_Region">
+                <h1 style="font-size: zrem; color: white;">My Roadmap</h1>
+                <svg viewbox="-20 0 600 360" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                    <linearGradient id="transGradient" gradientUnits="userSpaceOnUse">
+                        <stop offset="20%" stop-color="rgba(0,0,0,0)" />
+                        <stop offset="70%" stop-color="rgba(5, 5, 5,1)" />
+                    </linearGradient>
+                    <linearGradient id="transMaskGradient" gradientUnits="userSpaceOnUse">
+                        <stop offset="20%" stop-color="rgba(0,0,0,0)" />
+                        <stop offset="70%" stop-color="white" />
+                    </linearGradient>
+                    <linearGradient id="transColGradient" gradientUnits="userSpaceOnUse">
+                        <stop offset="5%" stop-color="blue" />
+                        <stop offset="100%" stop-color="lightblue" />
+                    </linearGradient>
+                    <linearGradient id="limeBlueGradient" gradientTransform="rotate(45)">
+                        <stop offset="5%" stop-color="blue" />
+                        <stop offset="95%" stop-color="cyan" />
+                    </linearGradient>
+                    </defs>
+                    <path class="timelineTrail" d="
+                    M 100 140 C 40 140, 40 220, 100 220
+                    M 110 220 C 70 220, 90 220, 440 220
+                    M 440 220 C 500 220, 500 300, 440 300
+                    " stroke="rgb(5, 5, 5)" stroke-width="30" stroke-linejoin="round" stroke-linecap="round" />
+                    <path d="M 100 60 C 70 60, 90 60, 440 60 
+                    M 440 60 C 500 60, 500 140, 440 140
+                    M 440 140 C 70 140, 90 140, 100 140
+                    " stroke="url(#transColGradient)" stroke-width="30" stroke-linejoin="round" />
+                    <path class="timelineTrail" d="M 439 300 C 70 300, 90 300, 110 300" stroke="url(#transGradient)" stroke-linecap="round" stroke-width="30"/>
+                    <mask id="timelineTrailMask">
+                        <path class="timelineTrail" d="M 100 140 C 40 140, 40 220, 100 220
+                        M 110 220 C 70 220, 90 220, 440 220" stroke="white" stroke-width="30" stroke-linejoin="round" stroke-linecap="round"/>
+                        <path class="timelineTrail" d="M 100 140 C 40 140, 40 220, 100 220
+                        M 440 220 C 500 220, 500 300, 440 300
+                        M 439 300 C 70 300, 90 300, 110 300" stroke="url(#transMaskGradient)" stroke-width="30" stroke-linejoin="round" stroke-linecap="round"/>
+                    </mask>
+                    <path id="timelineTrailBright" d="
+                    M 100 140 C 40 140, 40 220, 100 220
+                    M 110 220 C 70 220, 90 220, 440 220
+                    M 440 220 C 500 220, 500 300, 440 300
+                    M 439 300 C 70 300, 90 300, 110 300
+                    M 439 300 C 70 300, 90 300, 110 300
+                    " stroke-width="30" stroke-linecap="round" mask="url(#timelineTrailMask)"/>
+                    
+                    <text x="70" y="20" class="markerText">High School (2017-2020)</text>
+                    <text x="210" y="20" class="markerText">University Yrs. 1-3 (2020-2023)</text>
+                    <text x="510" y="100" class="markerText">
+                        <tspan>Internship</tspan>
+                        <tspan x="510" y="110">(2023)</tspan>
+                    </text>
+                    <text x="250" y="105" class="markerText">University Final Year (2024)</text>
+                    <text x="65" y="105" class="markerText">[OPEN TO WORK]</text>
+
+                    <circle class="rmap_marker-1" cx="150" cy="60" r="25" stroke-width="1"></circle>
+                    <circle class="rmap_marker-2" cx="300" cy="60" r="25" stroke-width="1"></circle>
+                    <circle class="rmap_marker-3" cx="480" cy="100" r="25" stroke-width="1"></circle>
+                    <circle class="rmap_marker-4" cx="380" cy="140" r="25" stroke-width="1"></circle>
+                    <circle class="rmap_marker-5" cx="100" cy="140" r="25" stroke-width="1"></circle>
+                    <circle class="rmap_fill 1" cx="150" cy="60" r="26"></circle>
+                    <circle class="rmap_fill 2" cx="300" cy="60" r="26"></circle>
+                    <circle class="rmap_fill 3" cx="480" cy="100" r="26"></circle>
+                    <circle class="rmap_fill 4" cx="380" cy="140" r="26"></circle>
+                    <circle class="rmap_fill 5" cx="100" cy="140" r="26"></circle>
+                </svg>
+            </div>
+            <div id="picContainer">
+                <img id="michaelPicture" src="public/assets/ProfilePhoto.jpeg" alt="Image missing" >
+            </div>
         </div>
-        <img id="Logo" src="public/assets/Logo.webp"/>
+        <svg id="cornerSymbol" viewbox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="400,400 150,400 400,0" fill="rgb(137, 207, 240)" stroke-width="3" />
+            <polygon points="400,400 125,400 400,100" fill="rgba(0, 150, 255, 0.7)" stroke-width="3" />
+            <polygon points="400,400 150,400 400,250" fill="rgba(100, 149, 237, 0.9)" stroke-width="3" />
+            <polygon points="400,400 250,400 400,150" fill="rgba(20, 52, 164, 0.9)" stroke-width="3" />
+        </svg>
     </div>
-    
 </body>
 </html>

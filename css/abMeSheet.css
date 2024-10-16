@@ -41,7 +41,7 @@ canvas ~ [id^="progressBar"]{
     padding: 1%;
     color: whitesmoke; font-family: "Kode Mono", monospace;
     background-color: rgb(46, 46, 46);
-    border: 2px solid  rgb(222, 205, 105);
+    border: 2px solid  rgb(105, 222, 195);
     border-radius: 10px;
 } #elementSelected {color: pink;}
 #pdfContainer {
@@ -68,7 +68,7 @@ canvas ~ [id^="progressBar"]{
     align-items: center;
     cursor: pointer;
     color: white; font-size: 25px; font-family: "Kode Mono", monospace;
-    background-image:  linear-gradient(to right,#a8d5ad, rgb(239, 57, 99));
+    background-image:  linear-gradient(to right,#0d2646, #3b0b36);
     border: solid white 2px;
     border-radius: 25px;
     padding: 5px; padding-right: 10px;
