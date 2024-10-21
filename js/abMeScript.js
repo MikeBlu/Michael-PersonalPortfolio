@@ -210,6 +210,9 @@ function rayOnMouseEvent(event) {
         switch (selectedObject) {
             case (satelliteResume.children[0]):
                 resumeViewer.style.visibility = 'visible';
+                if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+                    window.open("../public/assets/DResumé_MB_Bare.pdf");
+                }
                 break;
             case (satelliteContact):
                 window.location.href = "mailto:michaelboulos47@gmail.com";
@@ -218,7 +221,6 @@ function rayOnMouseEvent(event) {
                 window.open("https://github.com/MikeBlu", '_blank').focus();
                 break;
         }
-        // if (selectedObject == satelliteResume.children[0]) resumeViewer.style.visibility = 'visible';
     } else {
         selectedObject = null;
         infoSelected.innerHTML = "Nothing";

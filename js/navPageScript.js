@@ -48,22 +48,23 @@ let menuShown = false;
         , timelineTrailBr = document.getElementById("timelineTrailBright"),
         markerText = document.getElementsByClassName("markerText");
 
-        console.log(mapPoints);
+        let mouseEnterEvent = 'ontouchstart' in window ? 'touchstart' : 'mouseenter',
+        mouseLeaveEvent = 'ontouchend' in window ? 'touchend' : 'mouseleave';
 
         for (let i = 0; i < mapPoints.length; i++) {
             if ( markerText[i] == undefined) continue;
-            mapPoints[i].addEventListener('mouseenter', function(e) {
+            mapPoints[i].addEventListener(mouseEnterEvent, function(e) {
                 markerText[i].style.visibility ="visible";
             });
-            mapPoints[i].addEventListener('mouseleave', function(e) {
+            mapPoints[i].addEventListener(mouseLeaveEvent, function(e) {
                 markerText[i].style.visibility ="hidden";
             });
         }
 
-        mapPoints[mapPoints.length-1].addEventListener('mouseenter', function(e) {
+        mapPoints[mapPoints.length-1].addEventListener(mouseEnterEvent, function(e) {
             timelineTrailBr.style.opacity = "100%";
         });
-        mapPoints[mapPoints.length-1].addEventListener('mouseleave', function(e) {
+        mapPoints[mapPoints.length-1].addEventListener(mouseLeaveEvent, function(e) {
             timelineTrailBr.style.opacity = "0%";
         });
 };
