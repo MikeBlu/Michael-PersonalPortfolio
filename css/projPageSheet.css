@@ -1,11 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&display=swap');
-html, body {
+
+html {
+    background-color: #20243a;
+    margin: 0;
+    height: 100%;
+}
+body {
     background:
     radial-gradient(40% 130% at bottom left, #0d2646 10%, transparent 80%),
     radial-gradient(130% 40% at bottom, #3b0b36 10%, #010817 80%);
     height: 100%;
     margin:0;
-    padding:0;
+    padding: 1%;
     font-family: "Kode Mono", monospace;
 }
 .project_showcase { 

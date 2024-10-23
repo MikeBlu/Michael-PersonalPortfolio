@@ -1,11 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&display=swap');
 
-html, body {
+html {
+    background-color: #20243a;
+    margin: 0;
+    height: 100%;
+}
+body {
     background:
-    radial-gradient(40% 130% at bottom left, #0d2646 10%, transparent 80%),
-    radial-gradient(130% 40% at bottom, #3b0b36 10%, #010817 80%);
+    radial-gradient(40% 130% at bottom left, #0d2646, transparent),
+    radial-gradient(130% 40% at bottom, #3b0b36, #010817);
     height: 100%;
     margin: 0;
+    padding: 0;
     overflow: hidden;
     font-family: "Kode Mono", monospace;
 }
@@ -67,10 +73,9 @@ body > div {
 #content_Region {
     display: flex;
     align-items: center;
-    height: 80vh;
-    width: 80vw;
+    width: 80%;
     margin: auto;
-    gap: 5%;
+    gap: auto;
 }
 
 #timeLine_Region {
@@ -89,8 +94,9 @@ body > div {
 }
 #timeLine_Region > svg {
     width: auto;
+    max-width: 100%;
 }
-@keyframes floatFromLeft {
+@keyframes floatFromLeftAndShake {
     0% {transform: translateX(400%); opacity: 0%;}
     60% {transform: translateX(0); opacity: 100%;}
     65% {transform: rotate(2deg);}
@@ -104,7 +110,7 @@ body > div {
     border: 2px rgb(154, 247, 246) dashed;
     border-radius: 10px;
     padding: 0.5em;
-    animation: floatFromLeft 1.5s ease-out;
+    animation: floatFromLeftAndShake 1.5s ease-out;
 }
 #michaelPicture {
     max-width: 100%;
@@ -115,17 +121,14 @@ body > div {
 
 @media only screen and (max-width: 600px) {
     #content_Region {
-      flex-direction: column;
-      width: 90%;
+        flex-direction: column;
+        width: 100%;
     }
     #hamburgerMenu_SVG {
         width: 80%;
     }
-    #timeLine_Region > svg {
-        height: 80%;
-    }
-    #picContainer {
-        max-height: 40%;
+    #timeLine_Region {
+        width: 80%;
     }
 }
 [class^=navCard] {
