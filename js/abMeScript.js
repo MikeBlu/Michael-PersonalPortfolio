@@ -126,6 +126,12 @@ let satelliteContact, conOrbitLock = new THREE.Group();
 meshLoader.load("../public/assets/Telephone.gltf",
 	function ( gltf ) {
         satelliteContact = gltf.scene;
+        let boundingBox = new THREE.Mesh( 
+            new THREE.BoxGeometry(1,1,1), 
+            new  THREE.MeshBasicMaterial({color: 0xffffff})
+        );
+        boundingBox.visible = false;
+        satelliteContact.add(boundingBox);
         satelliteContact.name = "Contacts";
         conOrbitLock.add(satelliteContact);
         satelliteContact.position.x = 2;
@@ -143,6 +149,12 @@ let satelliteRole, roleOrbitLock = new THREE.Group();
 meshLoader.load("../public/assets/Personnel.gltf",
 	function ( gltf ) {
         satelliteRole = gltf.scene;
+        let boundingBox = new THREE.Mesh( 
+            new THREE.BoxGeometry(1,1,1), 
+            new  THREE.MeshBasicMaterial({color: 0xffffff})
+        );
+        boundingBox.visible = false;
+        satelliteRole.add(boundingBox);
         satelliteRole.name = "My Role";
         roleOrbitLock.add(satelliteRole);
         satelliteRole.position.x = 3;

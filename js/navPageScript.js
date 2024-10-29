@@ -4,6 +4,15 @@ window.onload = () => {
 
     const indicator = document.getElementById("cursorIndicator");
 
+    function resetAnimationClass(element, animationClass) {
+        console.log("animation asserted");
+        if (element.classList.contains(animationClass)) {
+            element.classList.remove(animationClass); // reset animation
+        }
+        void element.offsetWidth; // trigger reflow
+        element.classList.add(animationClass); // start animation
+    }
+
     document.body.onpointermove = event => {
         const { clientX, clientY } = event;
 
@@ -11,13 +20,27 @@ window.onload = () => {
             left: `${clientX}px`,
             top: `${clientY}px`
         
-        }, {duration: 500, fill: "forwards"})
+        }, {duration: 300, fill: "forwards"})
 
         indicator.style.maskPosition = `${clientX}px ${clientY}px`;
 
     }
 
     let navCards = document.querySelectorAll('div[class^="navCard"]');
+
+    function setProfileImageShake() {
+        let profileImage = document.getElementById("picContainer");
+        console.log("classChange asserted");
+        profileImage.classList.remove("slideAndShake");
+        profileImage.addEventListener("click", function(e) {
+            resetAnimationClass(profileImage,"shakeOnClick");
+        });
+        profileImage.addEventListener("touchstart", function(e) {
+            resetAnimationClass(profileImage,"shakeOnClick");
+        });
+    }
+
+    setTimeout(setProfileImageShake,1500);
 
     function rotateNavCards(open) {
         for (let i = 0; i < navCards.length; i++ ) {
@@ -27,9 +50,8 @@ window.onload = () => {
     }
 
 
-    const navButton = document.getElementById("navButton");
     const navIcon = document.getElementById("hamburgerMenu_SVG");
-    navButton.onclick = () => {
+    navIcon.onclick = () => {
         if (menuShown) {
             navIcon.childNodes[1].style.transform = "none";
             navIcon.childNodes[3].style.opacity = "100%";
